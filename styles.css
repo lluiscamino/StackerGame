@@ -1,0 +1,40 @@
+:root {
+    --height: 90vh;
+    --width: calc(var(--height)*(7/12));
+    --border: 2px solid #1460b6;
+}
+body {
+    font-family: Roboto, Arial;
+}
+.game {
+    height: var(--height);
+    width: calc(var(--width) + 1vh);
+    margin: 0 auto;
+}
+.block {
+    background-color : #1555b6;
+    border-right: var(--border);
+    border-bottom: var(--border);
+    height: calc(var(--width)/7 - 2px);
+    width: calc(var(--width)/7 - 2px);
+    float: left;
+}
+.wrong {
+    transition: 2s;
+    background-color: #1555b6 !important;
+}
+.marked {
+    background-color: white;
+}
+.block-group div:first-of-type {
+    border-left: var(--border);
+}
+#group11 .block {
+    border-top: var(--border);
+}
+#group0 .block {
+    margin-bottom: 10px;
+}
+.info {
+    text-align: center;
+}
