@@ -16,7 +16,8 @@ export class Game {
 
     static newGame(event: any): void {
         if ((event.which === 1 || event.which === 32) && !Game.gameStarted) {
-            document.getElementById('go').innerText = 'Hit!';
+            (document.getElementById('hit') as HTMLButtonElement).disabled = false;
+            (document.getElementById('start') as HTMLButtonElement).disabled = true;
             let game: Game = new Game();
             game.moveBlocks();
         }
@@ -88,29 +89,33 @@ export class Game {
         let div: number = this.calculateDiv();
         let block: number = 0;
         let direction: string = 'left';
-        clearInterval(this.intervals[this.level-1]);
-        this.intervals[level] = setInterval(function() {
-            if (block%div >= 0 && block%div < Game.COLUMNS) {
-                document.getElementById('block' + (block % div + level*Game.COLUMNS)).classList.add('marked');
+        let finished: boolean = this.finished;
+        clearInterval(this.intervals[this.level - 1]);
+        this.intervals[level] = setInterval(function () {
+            if (!finished) {
+                if (block % div >= 0 && block % div < Game.COLUMNS) {
+                    document.getElementById('block' + (block % div + level * Game.COLUMNS)).classList.add('marked');
+                }
+                if ((block - availableBlocks) % div >= 0 || (block + availableBlocks) % div >= 0) {
+                    let blockToUncolour = direction === 'left' && block - availableBlocks >= 0 ? block - availableBlocks : block + availableBlocks;
+                    document.getElementById('block' + ((blockToUncolour) % div + level * Game.COLUMNS)).classList.remove('marked');
+                }
+                if (block % div === Game.COLUMNS - 2 + availableBlocks && direction === 'left') {
+                    direction = 'right';
+                } else if (block % div == 1 - availableBlocks && direction === 'right') {
+                    direction = 'left';
+                }
+                block = direction === 'left' ? block + 1 : block - 1;
             }
-            if ((block - availableBlocks) % div >= 0 || (block + availableBlocks) % div >= 0) {
-                let blockToUncolour = direction === 'left' && block - availableBlocks >= 0 ? block - availableBlocks : block + availableBlocks;
-                document.getElementById('block' + ((blockToUncolour) % div + level*Game.COLUMNS)).classList.remove('marked');
-            }
-            if (block%div === Game.COLUMNS - 2 + availableBlocks  && direction === 'left') {
-                direction = 'right';
-            } else if (block%div == 1 - availableBlocks && direction === 'right') {
-                direction = 'left';
-            }
-            block = direction === 'left' ? block+1 : block-1;
-        }, 1/this.speed);
-            let obj: Game = this;
-            document.addEventListener('keydown', function(event: any): void {
-                obj.stopBlocks(event);
-            });
-            document.getElementById('go').addEventListener('click', function(event: any): void {
-                obj.stopBlocks(event);
-            });
+        }, 1 / this.speed);
+        let obj: Game = this;
+        document.addEventListener('keydown', function (event: any): void {
+            obj.stopBlocks(event);
+        });
+        document.getElementById('hit').addEventListener('click', function (event: any): void {
+            (document.getElementById('hit') as HTMLButtonElement).blur();
+            obj.stopBlocks(event);
+        });
     }
 
     private stopBlocks(event: any): void {
@@ -125,6 +130,7 @@ export class Game {
         this.finished = true;
         Game.gameStarted = false;
         alert(won ? 'You won!' : 'You lost!');
-        document.getElementById('go').innerText = 'Play again!';
+        (document.getElementById('hit') as HTMLButtonElement).disabled = true;
+        (document.getElementById('start') as HTMLButtonElement).disabled = false;
     }
 }

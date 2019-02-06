@@ -1,3 +1,3 @@
 import { Game } from "./Game.js";
-document.getElementById('go').addEventListener('click', Game.newGame);
+document.getElementById('start').addEventListener('click', Game.newGame);
 document.addEventListener('keydown', Game.newGame);

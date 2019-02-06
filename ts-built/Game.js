@@ -10,7 +10,8 @@ export class Game {
     }
     static newGame(event) {
         if ((event.which === 1 || event.which === 32) && !Game.gameStarted) {
-            document.getElementById('go').innerText = 'Hit!';
+            document.getElementById('hit').disabled = false;
+            document.getElementById('start').disabled = true;
             let game = new Game();
             game.moveBlocks();
         }
@@ -79,28 +80,32 @@ export class Game {
         let div = this.calculateDiv();
         let block = 0;
         let direction = 'left';
+        let finished = this.finished;
         clearInterval(this.intervals[this.level - 1]);
         this.intervals[level] = setInterval(function () {
-            if (block % div >= 0 && block % div < Game.COLUMNS) {
-                document.getElementById('block' + (block % div + level * Game.COLUMNS)).classList.add('marked');
+            if (!finished) {
+                if (block % div >= 0 && block % div < Game.COLUMNS) {
+                    document.getElementById('block' + (block % div + level * Game.COLUMNS)).classList.add('marked');
+                }
+                if ((block - availableBlocks) % div >= 0 || (block + availableBlocks) % div >= 0) {
+                    let blockToUncolour = direction === 'left' && block - availableBlocks >= 0 ? block - availableBlocks : block + availableBlocks;
+                    document.getElementById('block' + ((blockToUncolour) % div + level * Game.COLUMNS)).classList.remove('marked');
+                }
+                if (block % div === Game.COLUMNS - 2 + availableBlocks && direction === 'left') {
+                    direction = 'right';
+                }
+                else if (block % div == 1 - availableBlocks && direction === 'right') {
+                    direction = 'left';
+                }
+                block = direction === 'left' ? block + 1 : block - 1;
             }
-            if ((block - availableBlocks) % div >= 0 || (block + availableBlocks) % div >= 0) {
-                let blockToUncolour = direction === 'left' && block - availableBlocks >= 0 ? block - availableBlocks : block + availableBlocks;
-                document.getElementById('block' + ((blockToUncolour) % div + level * Game.COLUMNS)).classList.remove('marked');
-            }
-            if (block % div === Game.COLUMNS - 2 + availableBlocks && direction === 'left') {
-                direction = 'right';
-            }
-            else if (block % div == 1 - availableBlocks && direction === 'right') {
-                direction = 'left';
-            }
-            block = direction === 'left' ? block + 1 : block - 1;
         }, 1 / this.speed);
         let obj = this;
         document.addEventListener('keydown', function (event) {
             obj.stopBlocks(event);
         });
-        document.getElementById('go').addEventListener('click', function (event) {
+        document.getElementById('hit').addEventListener('click', function (event) {
+            document.getElementById('hit').blur();
             obj.stopBlocks(event);
         });
     }
@@ -115,7 +120,8 @@ export class Game {
         this.finished = true;
         Game.gameStarted = false;
         alert(won ? 'You won!' : 'You lost!');
-        document.getElementById('go').innerText = 'Play again!';
+        document.getElementById('hit').disabled = true;
+        document.getElementById('start').disabled = false;
     }
 }
 Game.ROWS = 12;
