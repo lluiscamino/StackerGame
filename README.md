@@ -25,7 +25,7 @@ tsc -w
 
 ## Demo
 
-To start the game, press <kbd>Enter</kbd> or click on the ``Start!`` button.
+To start the game, press <kbd>Enter</kbd> or click on the the blocks.
 
 Link: [Click here to play](https://lluiscamino.github.io/StackerGame/)
 
