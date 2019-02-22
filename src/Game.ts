@@ -30,6 +30,29 @@ export class Game {
         }
     }
 
+    static generateBlocks(): void {
+        let numBlocks: number = 0;
+        let gameClickable: HTMLElement = document.getElementById('gameClickable');
+        for (let i: number = 0; i < Game.ROWS; i++) {
+            let blockGroup: HTMLElement = document.createElement('div');
+            blockGroup.classList.add('block-group');
+            blockGroup.id = 'group' + i;
+            gameClickable.prepend(blockGroup);
+            for (let j: number = 0; j < Game.COLUMNS; j++) {
+                let block: HTMLElement = document.createElement('div');
+                block.classList.add('block');
+                block.id = 'block' + numBlocks;
+                blockGroup.prepend(block);
+                numBlocks++;
+            }
+        }
+        let blockInfoGroup: HTMLElement = document.createElement('div');
+        blockInfoGroup.classList.add('block-group');
+        blockInfoGroup.id = 'info';
+        blockInfoGroup.innerHTML = 'Points: <span id="numPoints">0</span> | Record: <span id="record"></span><span id="message"></span>';
+        gameClickable.prepend(blockInfoGroup);
+    }
+
     private updateRecord(): void {
         if (this.points > Game._record) {
             Game._record = this.points;
