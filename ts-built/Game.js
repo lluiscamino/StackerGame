@@ -2,19 +2,45 @@ export class Game {
     constructor() {
         this.level = 0;
         this.availableBlocks = 3;
-        this.speed = 0.012;
+        this.speed = 0.009;
         this.intervals = [];
+        this.points = 0;
         Game.gameStarted = true;
         this.finished = false;
         this.resetBlocks();
     }
+
+    static get record() {
+        return this._record;
+    }
     static newGame(event) {
         if ((event.which === 1 || event.which === 32) && !Game.gameStarted) {
-            document.getElementById('hit').disabled = false;
-            document.getElementById('start').disabled = true;
             let game = new Game();
+            game.updateRecord();
+            game.updatePoints();
+            game.updateMessage();
             game.moveBlocks();
         }
+    }
+
+    updateRecord() {
+        if (this.points > Game._record) {
+            Game._record = this.points;
+            localStorage.setItem('record', String(Game._record));
+        }
+        document.getElementById('record').innerText = String(Game._record);
+    }
+
+    updatePoints() {
+        document.getElementById('numPoints').innerText = String(this.points);
+    }
+
+    updateMessage(won = false) {
+        let newMessage = '';
+        if (this.finished) {
+            newMessage = won ? 'You won! 😀' : 'You lost! 😱';
+        }
+        document.getElementById('message').innerText = newMessage;
     }
     resetBlocks() {
         let blocks = document.getElementsByClassName('block');
@@ -61,6 +87,8 @@ export class Game {
         }
         this.level++;
         this.speed *= 1.1;
+        this.points = Math.round(50 + 1.1 * this.points);
+        this.updatePoints();
         if (this.availableBlocks === 0) {
             this.end(false);
         }
@@ -104,8 +132,7 @@ export class Game {
         document.addEventListener('keydown', function (event) {
             obj.stopBlocks(event);
         });
-        document.getElementById('hit').addEventListener('click', function (event) {
-            document.getElementById('hit').blur();
+        document.getElementById('gameClickable').addEventListener('click', function (event) {
             obj.stopBlocks(event);
         });
     }
@@ -119,12 +146,12 @@ export class Game {
     end(won) {
         this.finished = true;
         Game.gameStarted = false;
-        alert(won ? 'You won!' : 'You lost!');
-        document.getElementById('hit').disabled = true;
-        document.getElementById('start').disabled = false;
+        this.updateMessage(won);
+        this.updateRecord();
     }
 }
 Game.ROWS = 12;
 Game.COLUMNS = 7;
+Game._record = Number(localStorage.getItem('record'));
 Game.gameStarted = false;
 //# sourceMappingURL=Game.js.map

@@ -1,4 +1,6 @@
 import { Game } from "./Game.js";
-document.getElementById('start').addEventListener('click', Game.newGame);
+
+document.getElementById('record').innerText = String(Game.record);
+document.getElementById('gameClickable').addEventListener('click', Game.newGame);
 document.addEventListener('keydown', Game.newGame);
 //# sourceMappingURL=main.js.map

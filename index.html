@@ -1,129 +1,130 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Stacker</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" type="text/css" href="styles.css">
-    </head>
-    <body>
-        <div class="game">
-            <div class="block-group" id="group11">
-                <div class="block" id="block83"></div>
-                <div class="block" id="block82"></div>
-                <div class="block" id="block81"></div>
-                <div class="block" id="block80"></div>
-                <div class="block" id="block79"></div>
-                <div class="block" id="block78"></div>
-                <div class="block" id="block77"></div>
-            </div>
-            <div class="block-group" id="group10">
-                <div class="block" id="block76"></div>
-                <div class="block" id="block75"></div>
-                <div class="block" id="block74"></div>
-                <div class="block" id="block73"></div>
-                <div class="block" id="block72"></div>
-                <div class="block" id="block71"></div>
-                <div class="block" id="block70"></div>
-            </div>
-            <div class="block-group" id="group9">
-                <div class="block" id="block69"></div>
-                <div class="block" id="block68"></div>
-                <div class="block" id="block67"></div>
-                <div class="block" id="block66"></div>
-                <div class="block" id="block65"></div>
-                <div class="block" id="block64"></div>
-                <div class="block" id="block63"></div>
-            </div>
-            <div class="block-group" id="group8">
-                <div class="block" id="block62"></div>
-                <div class="block" id="block61"></div>
-                <div class="block" id="block60"></div>
-                <div class="block" id="block59"></div>
-                <div class="block" id="block58"></div>
-                <div class="block" id="block57"></div>
-                <div class="block" id="block56"></div>
-            </div>
-            <div class="block-group" id="group7">
-                <div class="block" id="block55"></div>
-                <div class="block" id="block54"></div>
-                <div class="block" id="block53"></div>
-                <div class="block" id="block52"></div>
-                <div class="block" id="block51"></div>
-                <div class="block" id="block50"></div>
-                <div class="block" id="block49"></div>
-            </div>
-            <div class="block-group" id="group6">
-                <div class="block" id="block48"></div>
-                <div class="block" id="block47"></div>
-                <div class="block" id="block46"></div>
-                <div class="block" id="block45"></div>
-                <div class="block" id="block44"></div>
-                <div class="block" id="block43"></div>
-                <div class="block" id="block42"></div>
-            </div>
-            <div class="block-group" id="group5">
-                <div class="block" id="block41"></div>
-                <div class="block" id="block40"></div>
-                <div class="block" id="block39"></div>
-                <div class="block" id="block38"></div>
-                <div class="block" id="block37"></div>
-                <div class="block" id="block36"></div>
-                <div class="block" id="block35"></div>
-            </div>
-            <div class="block-group" id="group4">
-                <div class="block" id="block34"></div>
-                <div class="block" id="block33"></div>
-                <div class="block" id="block32"></div>
-                <div class="block" id="block31"></div>
-                <div class="block" id="block30"></div>
-                <div class="block" id="block29"></div>
-                <div class="block" id="block28"></div>
-            </div>
-            <div class="block-group" id="group3">
-                <div class="block" id="block27"></div>
-                <div class="block" id="block26"></div>
-                <div class="block" id="block25"></div>
-                <div class="block" id="block24"></div>
-                <div class="block" id="block23"></div>
-                <div class="block" id="block22"></div>
-                <div class="block" id="block21"></div>
-            </div>
-            <div class="block-group" id="group2">
-                <div class="block" id="block20"></div>
-                <div class="block" id="block19"></div>
-                <div class="block" id="block18"></div>
-                <div class="block" id="block17"></div>
-                <div class="block" id="block16"></div>
-                <div class="block" id="block15"></div>
-                <div class="block" id="block14"></div>
-            </div>
-            <div class="block-group" id="group1">
-                <div class="block" id="block13"></div>
-                <div class="block" id="block12"></div>
-                <div class="block" id="block11"></div>
-                <div class="block" id="block10"></div>
-                <div class="block" id="block9"></div>
-                <div class="block" id="block8"></div>
-                <div class="block" id="block7"></div>
-            </div>
-            <div class="block-group" id="group0">
-                <div class="block" id="block6"></div>
-                <div class="block" id="block5"></div>
-                <div class="block" id="block4"></div>
-                <div class="block" id="block3"></div>
-                <div class="block" id="block2"></div>
-                <div class="block" id="block1"></div>
-                <div class="block" id="block0"></div>
-            </div>
-            <div class="info">
-                Press ENTER or the button below to play.
-                <br>
-                <button id="start">Start!</button>
-                <button id="hit" disabled>Hit</button>
-            </div>
+<head>
+    <meta charset="UTF-8">
+    <title>Stacker</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+<div class="game">
+    <div id="gameClickable">
+        <div class="block-group" id="info">
+            Points: <span id="numPoints">0</span> |
+            Record: <span id="record"></span>
+            <span id="message"></span>
         </div>
-        <script src="ts-built/main.js" type="module"></script>
-        <script src="ts-built/Game.js" type="module"></script>
-    </body>
+        <div class="block-group" id="group11">
+            <div class="block" id="block83"></div>
+            <div class="block" id="block82"></div>
+            <div class="block" id="block81"></div>
+            <div class="block" id="block80"></div>
+            <div class="block" id="block79"></div>
+            <div class="block" id="block78"></div>
+            <div class="block" id="block77"></div>
+        </div>
+        <div class="block-group" id="group10">
+            <div class="block" id="block76"></div>
+            <div class="block" id="block75"></div>
+            <div class="block" id="block74"></div>
+            <div class="block" id="block73"></div>
+            <div class="block" id="block72"></div>
+            <div class="block" id="block71"></div>
+            <div class="block" id="block70"></div>
+        </div>
+        <div class="block-group" id="group9">
+            <div class="block" id="block69"></div>
+            <div class="block" id="block68"></div>
+            <div class="block" id="block67"></div>
+            <div class="block" id="block66"></div>
+            <div class="block" id="block65"></div>
+            <div class="block" id="block64"></div>
+            <div class="block" id="block63"></div>
+        </div>
+        <div class="block-group" id="group8">
+            <div class="block" id="block62"></div>
+            <div class="block" id="block61"></div>
+            <div class="block" id="block60"></div>
+            <div class="block" id="block59"></div>
+            <div class="block" id="block58"></div>
+            <div class="block" id="block57"></div>
+            <div class="block" id="block56"></div>
+        </div>
+        <div class="block-group" id="group7">
+            <div class="block" id="block55"></div>
+            <div class="block" id="block54"></div>
+            <div class="block" id="block53"></div>
+            <div class="block" id="block52"></div>
+            <div class="block" id="block51"></div>
+            <div class="block" id="block50"></div>
+            <div class="block" id="block49"></div>
+        </div>
+        <div class="block-group" id="group6">
+            <div class="block" id="block48"></div>
+            <div class="block" id="block47"></div>
+            <div class="block" id="block46"></div>
+            <div class="block" id="block45"></div>
+            <div class="block" id="block44"></div>
+            <div class="block" id="block43"></div>
+            <div class="block" id="block42"></div>
+        </div>
+        <div class="block-group" id="group5">
+            <div class="block" id="block41"></div>
+            <div class="block" id="block40"></div>
+            <div class="block" id="block39"></div>
+            <div class="block" id="block38"></div>
+            <div class="block" id="block37"></div>
+            <div class="block" id="block36"></div>
+            <div class="block" id="block35"></div>
+        </div>
+        <div class="block-group" id="group4">
+            <div class="block" id="block34"></div>
+            <div class="block" id="block33"></div>
+            <div class="block" id="block32"></div>
+            <div class="block" id="block31"></div>
+            <div class="block" id="block30"></div>
+            <div class="block" id="block29"></div>
+            <div class="block" id="block28"></div>
+        </div>
+        <div class="block-group" id="group3">
+            <div class="block" id="block27"></div>
+            <div class="block" id="block26"></div>
+            <div class="block" id="block25"></div>
+            <div class="block" id="block24"></div>
+            <div class="block" id="block23"></div>
+            <div class="block" id="block22"></div>
+            <div class="block" id="block21"></div>
+        </div>
+        <div class="block-group" id="group2">
+            <div class="block" id="block20"></div>
+            <div class="block" id="block19"></div>
+            <div class="block" id="block18"></div>
+            <div class="block" id="block17"></div>
+            <div class="block" id="block16"></div>
+            <div class="block" id="block15"></div>
+            <div class="block" id="block14"></div>
+        </div>
+        <div class="block-group" id="group1">
+            <div class="block" id="block13"></div>
+            <div class="block" id="block12"></div>
+            <div class="block" id="block11"></div>
+            <div class="block" id="block10"></div>
+            <div class="block" id="block9"></div>
+            <div class="block" id="block8"></div>
+            <div class="block" id="block7"></div>
+        </div>
+        <div class="block-group" id="group0">
+            <div class="block" id="block6"></div>
+            <div class="block" id="block5"></div>
+            <div class="block" id="block4"></div>
+            <div class="block" id="block3"></div>
+            <div class="block" id="block2"></div>
+            <div class="block" id="block1"></div>
+            <div class="block" id="block0"></div>
+        </div>
+    </div>
+</div>
+<script src="ts-built/main.js" type="module"></script>
+<script src="ts-built/Game.js" type="module"></script>
+</body>
 </html>
