@@ -9,7 +9,6 @@ export class Game {
         this.finished = false;
         this.resetBlocks();
     }
-
     static get record() {
         return this._record;
     }
@@ -22,7 +21,6 @@ export class Game {
             game.moveBlocks();
         }
     }
-
     updateRecord() {
         if (this.points > Game._record) {
             Game._record = this.points;
@@ -30,11 +28,9 @@ export class Game {
         }
         document.getElementById('record').innerText = String(Game._record);
     }
-
     updatePoints() {
         document.getElementById('numPoints').innerText = String(this.points);
     }
-
     updateMessage(won = false) {
         let newMessage = '';
         if (this.finished) {
@@ -86,13 +82,13 @@ export class Game {
             this.availableBlocks--;
         }
         this.level++;
-        this.speed *= 1.1;
-        this.points = Math.round(50 + 1.1 * this.points);
-        this.updatePoints();
         if (this.availableBlocks === 0) {
             this.end(false);
         }
         else {
+            this.speed *= 1.1;
+            this.points = Math.round(50 + 1.1 * this.points);
+            this.updatePoints();
             for (let block of wrongBlocks) {
                 block.classList.remove('marked');
                 block.classList.add('wrong');
@@ -101,6 +97,7 @@ export class Game {
                 this.end(true);
             }
         }
+        console.log(this.speed);
     }
     moveBlocks() {
         let level = this.level;
