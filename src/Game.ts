@@ -1,12 +1,14 @@
 export class Game {
     static readonly ROWS: number = 12;
     static readonly COLUMNS: number = 7;
+    private static _record: number = Number(localStorage.getItem('record'));
     private static gameStarted: boolean = false;
     private finished: boolean;
     private level: number = 0;
     private availableBlocks: number = 3;
-    private speed: number = 0.012;
+    private speed: number = 0.009;
     private intervals: number[] = [];
+    private points: number = 0;
 
     constructor() {
         Game.gameStarted = true;
@@ -14,13 +16,38 @@ export class Game {
         this.resetBlocks();
     }
 
+    static get record(): number {
+        return this._record;
+    }
+
     static newGame(event: any): void {
         if ((event.which === 1 || event.which === 32) && !Game.gameStarted) {
-            (document.getElementById('hit') as HTMLButtonElement).disabled = false;
-            (document.getElementById('start') as HTMLButtonElement).disabled = true;
             let game: Game = new Game();
+            game.updateRecord();
+            game.updatePoints();
+            game.updateMessage();
             game.moveBlocks();
         }
+    }
+
+    private updateRecord(): void {
+        if (this.points > Game._record) {
+            Game._record = this.points;
+            localStorage.setItem('record', String(Game._record));
+        }
+        document.getElementById('record').innerText = String(Game._record);
+    }
+
+    private updatePoints(): void {
+        document.getElementById('numPoints').innerText = String(this.points);
+    }
+
+    private updateMessage(won: boolean = false): void {
+        let newMessage: string = '';
+        if (this.finished) {
+            newMessage = won ? 'You won! 😀' : 'You lost! 😱';
+        }
+        document.getElementById('message').innerText = newMessage;
     }
 
     private resetBlocks(): void {
@@ -70,6 +97,8 @@ export class Game {
         }
         this.level++;
         this.speed *= 1.1;
+        this.points = Math.round(50 + 1.1 * this.points);
+        this.updatePoints();
         if (this.availableBlocks === 0) {
             this.end(false);
         } else {
@@ -97,7 +126,7 @@ export class Game {
                     document.getElementById('block' + (block % div + level * Game.COLUMNS)).classList.add('marked');
                 }
                 if ((block - availableBlocks) % div >= 0 || (block + availableBlocks) % div >= 0) {
-                    let blockToUncolour = direction === 'left' && block - availableBlocks >= 0 ? block - availableBlocks : block + availableBlocks;
+                    let blockToUncolour: number = direction === 'left' && block - availableBlocks >= 0 ? block - availableBlocks : block + availableBlocks;
                     document.getElementById('block' + ((blockToUncolour) % div + level * Game.COLUMNS)).classList.remove('marked');
                 }
                 if (block % div === Game.COLUMNS - 2 + availableBlocks && direction === 'left') {
@@ -112,8 +141,7 @@ export class Game {
         document.addEventListener('keydown', function (event: any): void {
             obj.stopBlocks(event);
         });
-        document.getElementById('hit').addEventListener('click', function (event: any): void {
-            (document.getElementById('hit') as HTMLButtonElement).blur();
+        document.getElementById('gameClickable').addEventListener('click', function (event: any): void {
             obj.stopBlocks(event);
         });
     }
@@ -129,8 +157,7 @@ export class Game {
     private end(won: boolean): void {
         this.finished = true;
         Game.gameStarted = false;
-        alert(won ? 'You won!' : 'You lost!');
-        (document.getElementById('hit') as HTMLButtonElement).disabled = true;
-        (document.getElementById('start') as HTMLButtonElement).disabled = false;
+        this.updateMessage(won);
+        this.updateRecord();
     }
 }
