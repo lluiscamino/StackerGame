@@ -27,6 +27,8 @@ tsc -w
 
 To start the game, press <kbd>Enter</kbd> or click on the the blocks.
 
+To modify the speed of the game and/or the background color, click on the ⚙ icon at the top of the screen.
+
 Link: [Click here to play](https://lluiscamino.github.io/StackerGame/)
 
 ## License
