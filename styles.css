@@ -14,7 +14,6 @@ body {
     margin: 0 auto;
 }
 .block {
-    background-color : #1555b6;
     border-right: var(--border);
     border-bottom: var(--border);
     height: calc(var(--width)/7 - 2px);
@@ -23,10 +22,9 @@ body {
 }
 .wrong {
     transition: 2s;
-    background-color: #1555b6 !important;
 }
 .marked {
-    background-color: white;
+    background-color: white !important;
 }
 .block-group div:first-of-type {
     border-left: var(--border);
@@ -50,4 +48,30 @@ body {
 #message {
     float: right;
     font-weight: bold;
+    margin-right: 4px;
+}
+
+#configGear {
+    float: right;
+    cursor: pointer;
+}
+
+#configForm {
+    display: none;
+    padding: 11px;
+    height: var(--height);
+}
+
+#configForm label {
+    font-weight: bold;
+}
+
+#configForm input {
+    float: right;
+}
+
+#configForm .info {
+    border: 1px solid #1555b6;
+    border-radius: 4px;
+    padding: 5px;
 }
