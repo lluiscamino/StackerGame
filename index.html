@@ -7,7 +7,13 @@
     <link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
-<div class="game">
+<div class="game" id="gameContainer">
+    <form id="configForm">
+        <p class="info">Changes on the speed value will be taken into account in the next game.</p>
+        <p><label for="speedRange">Speed</label><input id="speedRange" type="range" min="20" max="100"></p>
+        <p><label for="bgColor">Background color</label><input id="bgColor" type="color"></p>
+        <p><input type="submit" value="Save changes"></p>
+    </form>
     <div id="gameClickable"></div>
 </div>
 <script src="ts-built/main.js" type="module"></script>

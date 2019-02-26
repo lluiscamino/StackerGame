@@ -3,10 +3,13 @@ export class Game {
     static readonly COLUMNS: number = 7;
     private static _record: number = Number(localStorage.getItem('record'));
     private static gameStarted: boolean = false;
+    private static configFormOpen: boolean = false;
+    private static backgroundColor: string = localStorage.getItem('bgColor') !== null ? localStorage.getItem('bgColor') : '#1555b6';
+    private static speedPercentage: number = localStorage.getItem('speedPercentage') !== null ? Number(localStorage.getItem('speedPercentage')) : 1;
     private finished: boolean;
     private level: number = 0;
     private availableBlocks: number = 3;
-    private speed: number = 0.009;
+    private speed: number = 0.009 * Game.speedPercentage;
     private intervals: number[] = [];
     private points: number = 0;
 
@@ -30,6 +33,38 @@ export class Game {
         }
     }
 
+    static changeBackgroundColor(): void {
+        let blocks: any = document.getElementsByClassName('block');
+        for (let i = 0; i < blocks.length; i++) {
+            blocks[i].style.backgroundColor = Game.backgroundColor;
+        }
+    }
+
+    private static updateDefaultConfigValues(): void {
+        (document.getElementById('speedRange') as HTMLInputElement).value = String(Game.speedPercentage * Number((document.getElementById('speedRange') as HTMLInputElement).max));
+        (document.getElementById('bgColor') as HTMLInputElement).value = Game.backgroundColor;
+    }
+
+    static handleConfigUpdate(event: any): void {
+        event.preventDefault();
+        let speedRange: number = Number((document.getElementById('speedRange') as HTMLInputElement).value) / Number((document.getElementById('speedRange') as HTMLInputElement).max);
+        let bgColor: string = (document.getElementById('bgColor') as HTMLInputElement).value;
+        localStorage.setItem('bgColor', bgColor);
+        Game.backgroundColor = bgColor;
+        localStorage.setItem('speedPercentage', String(speedRange));
+        Game.speedPercentage = speedRange;
+        Game.changeBackgroundColor();
+        Game.handleConfigClick();
+    }
+
+    static handleConfigClick(): void {
+        Game.updateDefaultConfigValues();
+        let configBlock: HTMLElement = document.getElementById('configForm');
+        let displayValue: string = Game.configFormOpen ? 'none' : 'block';
+        configBlock.style.display = displayValue;
+        Game.configFormOpen = !Game.configFormOpen;
+    }
+
     static generateBlocks(): void {
         let numBlocks: number = 0;
         let gameClickable: HTMLElement = document.getElementById('gameClickable');
@@ -46,11 +81,13 @@ export class Game {
                 numBlocks++;
             }
         }
+        let game: HTMLElement = document.getElementById('gameContainer');
         let blockInfoGroup: HTMLElement = document.createElement('div');
         blockInfoGroup.classList.add('block-group');
         blockInfoGroup.id = 'info';
-        blockInfoGroup.innerHTML = 'Points: <span id="numPoints">0</span> | Record: <span id="record"></span><span id="message"></span>';
-        gameClickable.prepend(blockInfoGroup);
+        blockInfoGroup.innerHTML = 'Points: <span id="numPoints">0</span> | Record: <span id="record"></span><span id="configGear"> ⚙</span><span id="message"></span>';
+        game.prepend(blockInfoGroup);
+        Game.changeBackgroundColor();
     }
 
     private updateRecord(): void {
@@ -123,7 +160,7 @@ export class Game {
             this.end(false);
         } else {
             this.speed *= 1.1;
-            this.points = Math.round(50 + 1.1 * this.points);
+            this.points = Math.round(50 * Game.speedPercentage + 1.1 * this.points);
             this.updatePoints();
             for (let block of wrongBlocks) {
                 block.classList.remove('marked');
@@ -133,7 +170,6 @@ export class Game {
                 this.end(true);
             }
         }
-        console.log(this.speed);
     }
 
     private moveBlocks(): void {
