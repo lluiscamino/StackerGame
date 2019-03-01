@@ -1,10 +1,11 @@
 export class Game {
     static readonly ROWS: number = 12;
     static readonly COLUMNS: number = 7;
+    static readonly DEFAULT_BLOCK_COLOR: string = '#1555b6';
     private static _record: number = Number(localStorage.getItem('record'));
     private static gameStarted: boolean = false;
     private static configFormOpen: boolean = false;
-    private static backgroundColor: string = localStorage.getItem('bgColor') !== null ? localStorage.getItem('bgColor') : '#1555b6';
+    private static backgroundColor: string = localStorage.getItem('bgColor') !== null ? localStorage.getItem('bgColor') : Game.DEFAULT_BLOCK_COLOR;
     private static speedPercentage: number = localStorage.getItem('speedPercentage') !== null ? Number(localStorage.getItem('speedPercentage')) : 1;
     private finished: boolean;
     private level: number = 0;
@@ -41,8 +42,18 @@ export class Game {
     }
 
     private static updateDefaultConfigValues(): void {
+        (document.querySelector('#configForm .info') as HTMLElement).style.display = 'none';
         (document.getElementById('speedRange') as HTMLInputElement).value = String(Game.speedPercentage * Number((document.getElementById('speedRange') as HTMLInputElement).max));
         (document.getElementById('bgColor') as HTMLInputElement).value = Game.backgroundColor;
+    }
+
+    static handleSpeedChange(): void {
+        (document.querySelector('#configForm .info') as HTMLElement).style.display = 'block';
+    }
+
+    static handleConfigReset(event: any): void {
+        (document.getElementById('speedRange') as HTMLInputElement).defaultValue = '100';
+        (document.getElementById('bgColor') as HTMLInputElement).defaultValue = Game.DEFAULT_BLOCK_COLOR;
     }
 
     static handleConfigUpdate(event: any): void {
@@ -85,7 +96,7 @@ export class Game {
         let blockInfoGroup: HTMLElement = document.createElement('div');
         blockInfoGroup.classList.add('block-group');
         blockInfoGroup.id = 'info';
-        blockInfoGroup.innerHTML = 'Points: <span id="numPoints">0</span> | Record: <span id="record"></span><span id="configGear"> ⚙</span><span id="message"></span>';
+        blockInfoGroup.innerHTML = 'Points: <span id="numPoints">0</span> | Record: <span id="record"></span><img src="images/settings.png" id="configGear"><span id="message"></span>';
         game.prepend(blockInfoGroup);
         Game.changeBackgroundColor();
     }
