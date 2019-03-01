@@ -21,19 +21,26 @@ export class Game {
             game.moveBlocks();
         }
     }
-
     static changeBackgroundColor() {
         let blocks = document.getElementsByClassName('block');
         for (let i = 0; i < blocks.length; i++) {
             blocks[i].style.backgroundColor = Game.backgroundColor;
         }
     }
-
     static updateDefaultConfigValues() {
+        document.querySelector('#configForm .info').style.display = 'none';
         document.getElementById('speedRange').value = String(Game.speedPercentage * Number(document.getElementById('speedRange').max));
         document.getElementById('bgColor').value = Game.backgroundColor;
     }
 
+    static handleSpeedChange() {
+        document.querySelector('#configForm .info').style.display = 'block';
+    }
+
+    static handleConfigReset(event) {
+        document.getElementById('speedRange').defaultValue = '100';
+        document.getElementById('bgColor').defaultValue = Game.DEFAULT_BLOCK_COLOR;
+    }
     static handleConfigUpdate(event) {
         event.preventDefault();
         let speedRange = Number(document.getElementById('speedRange').value) / Number(document.getElementById('speedRange').max);
@@ -45,7 +52,6 @@ export class Game {
         Game.changeBackgroundColor();
         Game.handleConfigClick();
     }
-
     static handleConfigClick() {
         Game.updateDefaultConfigValues();
         let configBlock = document.getElementById('configForm');
@@ -73,7 +79,7 @@ export class Game {
         let blockInfoGroup = document.createElement('div');
         blockInfoGroup.classList.add('block-group');
         blockInfoGroup.id = 'info';
-        blockInfoGroup.innerHTML = 'Points: <span id="numPoints">0</span> | Record: <span id="record"></span><span id="configGear"> ⚙</span><span id="message"></span>';
+        blockInfoGroup.innerHTML = 'Points: <span id="numPoints">0</span> | Record: <span id="record"></span><img src="images/settings.png" id="configGear"><span id="message"></span>';
         game.prepend(blockInfoGroup);
         Game.changeBackgroundColor();
     }
@@ -204,9 +210,10 @@ export class Game {
 }
 Game.ROWS = 12;
 Game.COLUMNS = 7;
+Game.DEFAULT_BLOCK_COLOR = '#1555b6';
 Game._record = Number(localStorage.getItem('record'));
 Game.gameStarted = false;
 Game.configFormOpen = false;
-Game.backgroundColor = localStorage.getItem('bgColor') !== null ? localStorage.getItem('bgColor') : '#1555b6';
+Game.backgroundColor = localStorage.getItem('bgColor') !== null ? localStorage.getItem('bgColor') : Game.DEFAULT_BLOCK_COLOR;
 Game.speedPercentage = localStorage.getItem('speedPercentage') !== null ? Number(localStorage.getItem('speedPercentage')) : 1;
 //# sourceMappingURL=Game.js.map

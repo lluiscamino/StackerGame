@@ -74,4 +74,19 @@ body {
     border: 1px solid #1555b6;
     border-radius: 4px;
     padding: 5px;
+    display: none;
+}
+
+.configFormButton {
+    border: 1px solid #1555b6;
+    margin-left: 3px;
+    border-radius: 6px;
+    color: #1460b6;
+    padding: 4px;
+    cursor: pointer;
+}
+
+.configFormButton[type="submit"] {
+    color: white;
+    background-color: #1460b6;
 }
