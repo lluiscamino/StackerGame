@@ -37,8 +37,10 @@ export class Game {
     static changeBackgroundColor(): void {
         let blocks: any = document.getElementsByClassName('block');
         for (let i = 0; i < blocks.length; i++) {
-            blocks[i].style.backgroundColor = Game.backgroundColor;
+            blocks[i].style.backgroundColor = Game.backgroundColor + '99';
+            blocks[i].style.borderColor = Game.backgroundColor;
         }
+        document.getElementById('info').style.backgroundColor = Game.backgroundColor;
     }
 
     private static updateDefaultConfigValues(): void {
@@ -60,6 +62,9 @@ export class Game {
         event.preventDefault();
         let speedRange: number = Number((document.getElementById('speedRange') as HTMLInputElement).value) / Number((document.getElementById('speedRange') as HTMLInputElement).max);
         let bgColor: string = (document.getElementById('bgColor') as HTMLInputElement).value;
+        if (bgColor.toUpperCase() === '#FFFFFF' || bgColor.toUpperCase() === '#FEFFFF') {
+            bgColor = '#000000';
+        }
         localStorage.setItem('bgColor', bgColor);
         Game.backgroundColor = bgColor;
         localStorage.setItem('speedPercentage', String(speedRange));
@@ -85,12 +90,13 @@ export class Game {
             blockGroup.id = 'group' + i;
             gameClickable.prepend(blockGroup);
             for (let j: number = 0; j < Game.COLUMNS; j++) {
-                let block: HTMLElement = document.createElement('div');
+                var block: HTMLElement = document.createElement('div');
                 block.classList.add('block');
                 block.id = 'block' + numBlocks;
                 blockGroup.prepend(block);
                 numBlocks++;
             }
+            block.classList.add('first-block');
         }
         let game: HTMLElement = document.getElementById('gameContainer');
         let blockInfoGroup: HTMLElement = document.createElement('div');

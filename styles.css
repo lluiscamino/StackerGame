@@ -1,7 +1,7 @@
 :root {
     --height: 97vh;
     --width: calc(var(--height)*(7/12));
-    --border: 2px solid #1460b6;
+    --border: 2px solid;
 }
 body {
     font-family: Roboto, Arial, serif;
@@ -10,7 +10,7 @@ body {
 }
 .game {
     height: var(--height);
-    width: calc(var(--width) + 1vh);
+    width: calc(var(--width) + 0.5vh);
     margin: 0 auto;
 }
 .block {
@@ -40,15 +40,15 @@ body {
     width: calc(var(--width) - 4px);
     background-color: #1555b6;
     color: white;
-    border-bottom: 1px solid;
     font-size: 14px;
     padding: 3px;
+    overflow: hidden;
+    height: 16px;
 }
 
 #message {
     float: right;
     font-weight: bold;
-    margin-right: 4px;
 }
 
 #configGear {
@@ -89,4 +89,8 @@ body {
 .configFormButton[type="submit"] {
     color: white;
     background-color: #1460b6;
+}
+
+.first-block {
+    clear: both;
 }

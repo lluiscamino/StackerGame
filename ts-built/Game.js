@@ -24,19 +24,19 @@ export class Game {
     static changeBackgroundColor() {
         let blocks = document.getElementsByClassName('block');
         for (let i = 0; i < blocks.length; i++) {
-            blocks[i].style.backgroundColor = Game.backgroundColor;
+            blocks[i].style.backgroundColor = Game.backgroundColor + '99';
+            blocks[i].style.borderColor = Game.backgroundColor;
         }
+        document.getElementById('info').style.backgroundColor = Game.backgroundColor;
     }
     static updateDefaultConfigValues() {
         document.querySelector('#configForm .info').style.display = 'none';
         document.getElementById('speedRange').value = String(Game.speedPercentage * Number(document.getElementById('speedRange').max));
         document.getElementById('bgColor').value = Game.backgroundColor;
     }
-
     static handleSpeedChange() {
         document.querySelector('#configForm .info').style.display = 'block';
     }
-
     static handleConfigReset(event) {
         document.getElementById('speedRange').defaultValue = '100';
         document.getElementById('bgColor').defaultValue = Game.DEFAULT_BLOCK_COLOR;
@@ -45,6 +45,9 @@ export class Game {
         event.preventDefault();
         let speedRange = Number(document.getElementById('speedRange').value) / Number(document.getElementById('speedRange').max);
         let bgColor = document.getElementById('bgColor').value;
+        if (bgColor.toUpperCase() === '#FFFFFF' || bgColor.toUpperCase() === '#FEFFFF') {
+            bgColor = '#000000';
+        }
         localStorage.setItem('bgColor', bgColor);
         Game.backgroundColor = bgColor;
         localStorage.setItem('speedPercentage', String(speedRange));
@@ -68,12 +71,13 @@ export class Game {
             blockGroup.id = 'group' + i;
             gameClickable.prepend(blockGroup);
             for (let j = 0; j < Game.COLUMNS; j++) {
-                let block = document.createElement('div');
+                var block = document.createElement('div');
                 block.classList.add('block');
                 block.id = 'block' + numBlocks;
                 blockGroup.prepend(block);
                 numBlocks++;
             }
+            block.classList.add('first-block');
         }
         let game = document.getElementById('gameContainer');
         let blockInfoGroup = document.createElement('div');
