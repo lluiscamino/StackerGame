@@ -14,6 +14,9 @@ export class Game {
     }
     static newGame(event) {
         if ((event.which === 1 || event.which === 32) && !Game.gameStarted) {
+            Game.audio.loop = true;
+            Game.audio.volume = Game.musicVolume;
+            Game.audio.play();
             let game = new Game();
             game.updateRecord();
             game.updatePoints();
@@ -33,6 +36,8 @@ export class Game {
         document.querySelector('#configForm .info').style.display = 'none';
         document.getElementById('speedRange').value = String(Game.speedPercentage * Number(document.getElementById('speedRange').max));
         document.getElementById('bgColor').value = Game.backgroundColor;
+        document.getElementById('musicVolume').value = String(Game.musicVolume * Number(document.getElementById('musicVolume').max));
+        document.getElementById('effectsVolume').value = String(Game.effectsVolume * Number(document.getElementById('effectsVolume').max));
     }
     static handleSpeedChange() {
         document.querySelector('#configForm .info').style.display = 'block';
@@ -40,11 +45,15 @@ export class Game {
     static handleConfigReset(event) {
         document.getElementById('speedRange').defaultValue = '100';
         document.getElementById('bgColor').defaultValue = Game.DEFAULT_BLOCK_COLOR;
+        document.getElementById('musicVolume').defaultValue = '80';
+        document.getElementById('effectsVolume').defaultValue = '100';
     }
     static handleConfigUpdate(event) {
         event.preventDefault();
         let speedRange = Number(document.getElementById('speedRange').value) / Number(document.getElementById('speedRange').max);
         let bgColor = document.getElementById('bgColor').value;
+        let musicVolume = Number(document.getElementById('musicVolume').value) / Number(document.getElementById('musicVolume').max);
+        let effectsVolume = Number(document.getElementById('effectsVolume').value) / Number(document.getElementById('effectsVolume').max);
         if (bgColor.toUpperCase() === '#FFFFFF' || bgColor.toUpperCase() === '#FEFFFF') {
             bgColor = '#000000';
         }
@@ -52,6 +61,11 @@ export class Game {
         Game.backgroundColor = bgColor;
         localStorage.setItem('speedPercentage', String(speedRange));
         Game.speedPercentage = speedRange;
+        localStorage.setItem('musicVolume', String(musicVolume));
+        Game.musicVolume = musicVolume;
+        localStorage.setItem('effectsVolume', String(effectsVolume));
+        Game.effectsVolume = effectsVolume;
+        Game.audio.volume = Game.musicVolume;
         Game.changeBackgroundColor();
         Game.handleConfigClick();
     }
@@ -148,7 +162,9 @@ export class Game {
             this.availableBlocks--;
         }
         this.level++;
+        let soundNotification;
         if (this.availableBlocks === 0) {
+            soundNotification = new Audio('sounds/lose.wav');
             this.end(false);
         }
         else {
@@ -160,9 +176,14 @@ export class Game {
                 block.classList.add('wrong');
             }
             if (this.level === Game.ROWS) {
+                soundNotification = new Audio('sounds/win.wav');
                 this.end(true);
+            } else {
+                soundNotification = new Audio('sounds/bleep.wav');
             }
         }
+        soundNotification.volume = Game.effectsVolume;
+        soundNotification.play();
     }
     moveBlocks() {
         let level = this.level;
@@ -206,6 +227,7 @@ export class Game {
         }
     }
     end(won) {
+        Game.audio.pause();
         this.finished = true;
         Game.gameStarted = false;
         this.updateMessage(won);
@@ -218,6 +240,9 @@ Game.DEFAULT_BLOCK_COLOR = '#1555b6';
 Game._record = Number(localStorage.getItem('record'));
 Game.gameStarted = false;
 Game.configFormOpen = false;
+Game.audio = new Audio('sounds/loop.wav');
 Game.backgroundColor = localStorage.getItem('bgColor') !== null ? localStorage.getItem('bgColor') : Game.DEFAULT_BLOCK_COLOR;
 Game.speedPercentage = localStorage.getItem('speedPercentage') !== null ? Number(localStorage.getItem('speedPercentage')) : 1;
+Game.musicVolume = localStorage.getItem('musicVolume') !== null ? Number(localStorage.getItem('musicVolume')) : 0.8;
+Game.effectsVolume = localStorage.getItem('effectsVolume') !== null ? Number(localStorage.getItem('effectsVolume')) : 1;
 //# sourceMappingURL=Game.js.map
